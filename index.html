@@ -1,0 +1,510 @@
+<!doctype html>
+<html lang="en" class="antialiased">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Treetaset Prasatbundith - Software Developer Portfolio</title>
+    <script src="https://cdn.tailwindcss.com?plugins=typography"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'system-ui', 'sans-serif'],
+                    },
+                    colors: {
+                        accent: {
+                            50: '#f0f9ff',
+                            100: '#e0f2fe',
+                            500: '#0ea5e9',
+                            600: '#0284c7',
+                            900: '#0c4a6e',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <script src="https://unpkg.com/react@18.3.1/umd/react.development.js"
+        integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L"
+        crossorigin="anonymous"></script>
+    <script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js"
+        integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm"
+        crossorigin="anonymous"></script>
+    <script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js"
+        integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y"
+        crossorigin="anonymous"></script>
+    <style>
+        /* Custom scrollbar for changelog and sidebar */
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 5px;
+            height: 5px;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #d4d4d8;
+            border-radius: 3px;
+        }
+
+        .dark .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #3f3f46;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: #a1a1aa;
+        }
+
+        .dark .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: #52525b;
+        }
+    </style>
+</head>
+
+<body
+    class="bg-neutral-50 dark:bg-neutral-950 text-neutral-900 dark:text-neutral-100 transition-colors duration-300 selection:bg-accent-500 selection:text-white">
+    <div id="root"></div>
+
+    <script type="text/babel">
+        const { useState, useEffect } = React;
+
+        // --- SVGs ---
+        const MapPinIcon = () => <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"></path><circle cx="12" cy="10" r="3"></circle></svg>;
+        const PhoneIcon = () => <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>;
+        const MailIcon = () => <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect width="20" height="16" x="2" y="4" rx="2"></rect><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"></path></svg>;
+        const GithubIcon = () => <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4"></path><path d="M9 18c-4.51 2-5-2-7-2"></path></svg>;
+        const LinkedinIcon = () => <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path><rect width="4" height="12" x="2" y="9"></rect><circle cx="4" cy="4" r="2"></circle></svg>;
+        const SunIcon = ({ className }) => <svg className={className} xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2"></path><path d="M12 20v2"></path><path d="m4.93 4.93 1.41 1.41"></path><path d="m17.66 17.66 1.41 1.41"></path><path d="M2 12h2"></path><path d="M20 12h2"></path><path d="m6.34 17.66-1.41 1.41"></path><path d="m19.07 4.93-1.41 1.41"></path></svg>;
+        const MoonIcon = ({ className }) => <svg className={className} xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"></path></svg>;
+        const ChevronDownIcon = ({ className }) => <svg className={className} xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m6 9 6 6 6-6"></path></svg>;
+        const ExternalLinkIcon = () => <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" x2="21" y1="14" y2="3"></line></svg>;
+        const UserIcon = () => <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="text-neutral-400 dark:text-neutral-600"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>;
+        const DocumentIcon = () => <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="group-hover:translate-y-[-1px] transition-transform"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" x2="8" y1="13" y2="13"></line><line x1="16" x2="8" y1="17" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>;
+
+        const ExperienceAccordion = ({ title, date, tags, bullets }) => {
+            const [isOpen, setIsOpen] = useState(false);
+
+            return (
+                <div className="relative pl-8 pb-8 border-l border-neutral-300 dark:border-neutral-800 last:border-l-0 last:pb-0">
+                    <div className="absolute left-[-5px] top-1.5 w-2.5 h-2.5 rounded-full bg-neutral-400 dark:bg-neutral-600 ring-4 ring-neutral-50 dark:ring-neutral-950"></div>
+
+                    <button
+                        onClick={() => setIsOpen(!isOpen)}
+                        className="w-full text-left flex flex-col md:flex-row md:items-start justify-between gap-2 md:gap-8 group focus:outline-none"
+                        aria-expanded={isOpen}
+                    >
+                        <div className="flex-1">
+                            <h3 className="text-base md:text-lg font-semibold text-neutral-900 dark:text-neutral-100 group-hover:text-accent-600 dark:group-hover:text-accent-500 transition-colors flex items-center gap-2">
+                                {title}
+                                <ChevronDownIcon className={`transition-transform duration-200 shrink-0 ${isOpen ? 'rotate-180' : ''}`} />
+                            </h3>
+                            <div className="text-xs font-semibold text-neutral-500 dark:text-neutral-400 mt-0.5 uppercase tracking-wide">{date}</div>
+
+                            <div className="flex flex-wrap gap-1.5 mt-3">
+                                {tags.map((tag, idx) => (
+                                    <span key={idx} className="px-2.5 py-0.5 text-xs font-medium rounded-full bg-neutral-100 dark:bg-neutral-900 text-neutral-600 dark:text-neutral-400 border border-neutral-200 dark:border-neutral-800">
+                                        {tag}
+                                    </span>
+                                ))}
+                            </div>
+                        </div>
+                    </button>
+
+                    <div className={`grid transition-all duration-300 ease-in-out ${isOpen ? 'grid-rows-[1fr] opacity-100 mt-4' : 'grid-rows-[0fr] opacity-0'}`}>
+                        <div className="overflow-hidden">
+                            <ul className="list-disc pl-5 space-y-2 text-neutral-600 dark:text-neutral-300 text-sm md:text-base leading-relaxed">
+                                {bullets.map((bullet, idx) => (
+                                    <li key={idx} dangerouslySetInnerHTML={{ __html: bullet }} />
+                                ))}
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            );
+        };
+
+        const App = () => {
+            const [darkMode, setDarkMode] = useState(false);
+            const [changelogOpen, setChangelogOpen] = useState(false);
+            const [imgError, setImgError] = useState(false);
+
+            useEffect(() => {
+                // Check localStorage on load, default to light mode
+                const localTheme = localStorage.getItem('theme');
+                if (localTheme === 'dark') {
+                    setDarkMode(true);
+                }
+            }, []);
+
+            useEffect(() => {
+                if (darkMode) {
+                    document.documentElement.classList.add('dark');
+                    localStorage.setItem('theme', 'dark');
+                } else {
+                    document.documentElement.classList.remove('dark');
+                    localStorage.setItem('theme', 'light');
+                }
+            }, [darkMode]);
+
+            const toggleDarkMode = () => setDarkMode(!darkMode);
+
+            return (
+                <div className="max-w-6xl xl:max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 py-8 md:py-16">
+                    <div className="lg:grid lg:grid-cols-12 lg:gap-12 items-start">
+
+                        {/* LEFT COLUMN: Sidebar (Sticky on desktop) */}
+                        <aside className="lg:col-span-4 lg:sticky lg:top-8 lg:max-h-[calc(100vh-4rem)] lg:overflow-y-auto custom-scrollbar pr-2 lg:pr-4 mb-12 lg:mb-0 flex flex-col justify-between">
+                            <div>
+                                {/* Header Info: Centered Profile Image & Details */}
+                                <div className="flex flex-col items-center text-center mb-6 pl-1 pt-1">
+                                    <div className="relative w-32 h-32 lg:w-36 lg:h-36 shrink-0 rounded-full bg-neutral-200 dark:bg-neutral-800 border-4 border-white dark:border-neutral-900 shadow-md overflow-hidden transition-transform duration-500 hover:scale-105 mb-4">
+                                        {imgError ? (
+                                            <div className="w-full h-full flex items-center justify-center bg-neutral-100 dark:bg-neutral-900">
+                                                <UserIcon />
+                                            </div>
+                                        ) : (
+                                            <img
+                                                src="assets/myprofile.png"
+                                                alt="Treetaset Prasatbundith"
+                                                className="w-full h-full object-cover"
+                                                onError={() => setImgError(true)}
+                                            />
+                                        )}
+                                    </div>
+
+                                    <h1 className="text-2xl md:text-3xl font-bold tracking-tight text-neutral-900 dark:text-neutral-50 mb-1">
+                                        Treetaset Prasatbundith
+                                    </h1>
+                                </div>
+
+                                {/* Contact Info List: Left-aligned relative to itself, centered as a block on mobile */}
+                                <div className="space-y-3 text-sm font-medium text-neutral-600 dark:text-neutral-400 mt-6 w-fit mx-auto lg:mx-0">
+                                    <div className="flex items-center gap-2.5">
+                                        <span className="text-neutral-400 dark:text-neutral-500"><MapPinIcon /></span>
+                                        <span>Khon Kaen, Thailand</span>
+                                    </div>
+                                    <div className="flex items-center gap-2.5">
+                                        <span className="text-neutral-400 dark:text-neutral-500"><PhoneIcon /></span>
+                                        <span>+66 63-446-0999</span>
+                                    </div>
+                                    <a href="mailto:Treetaset.p42@gmail.com" className="flex items-center gap-2.5 hover:text-accent-600 dark:hover:text-accent-500 transition-colors">
+                                        <span className="text-neutral-400 dark:text-neutral-500"><MailIcon /></span>
+                                        <span>Treetaset.p42@gmail.com</span>
+                                    </a>
+                                    <a href="https://github.com/treetasetp42" target="_blank" rel="noreferrer" className="flex items-center gap-2.5 hover:text-accent-600 dark:hover:text-accent-500 transition-colors">
+                                        <span className="text-neutral-400 dark:text-neutral-500"><GithubIcon /></span>
+                                        <span>GitHub</span>
+                                    </a>
+                                    <a href="https://www.linkedin.com/in/treetaset-prasatbundith-9243aa357" target="_blank" rel="noreferrer" className="flex items-center gap-2.5 hover:text-accent-600 dark:hover:text-accent-500 transition-colors">
+                                        <span className="text-neutral-400 dark:text-neutral-500"><LinkedinIcon /></span>
+                                        <span>LinkedIn</span>
+                                    </a>
+                                    <a href="assets/resume.pdf" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2.5 hover:text-accent-600 dark:hover:text-accent-500 transition-colors">
+                                        <span className="text-neutral-400 dark:text-neutral-500"><DocumentIcon /></span>
+                                        <span>Resume</span>
+                                    </a>
+                                </div>
+
+                                {/* Technical Stack Section */}
+                                <div className="mt-8 border-t border-neutral-200 dark:border-neutral-800 pt-6">
+                                    <h3 className="text-xs font-bold uppercase tracking-wider text-neutral-500 dark:text-neutral-400 mb-4">
+                                        Technical Stack
+                                    </h3>
+                                    <div className="space-y-4">
+                                        <div>
+                                            <h4 className="text-xs font-semibold text-neutral-400 dark:text-neutral-500 uppercase mb-2">Languages</h4>
+                                            <div className="flex flex-wrap gap-1.5">
+                                                {["C#", "JavaScript", "SQL", "HTML", "CSS", "Dart"].map((lang, idx) => (
+                                                    <span key={idx} className="px-2 py-0.5 text-xs font-medium rounded bg-neutral-100 dark:bg-neutral-900 text-neutral-700 dark:text-neutral-300 border border-neutral-200/40 dark:border-neutral-800/40">
+                                                        {lang}
+                                                    </span>
+                                                ))}
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <h4 className="text-xs font-semibold text-neutral-400 dark:text-neutral-500 uppercase mb-2">Frontend & Mobile</h4>
+                                            <div className="flex flex-wrap gap-1.5">
+                                                {["Flutter (BLoC)", "React.js", "PWA"].map((item, idx) => (
+                                                    <span key={idx} className="px-2 py-0.5 text-xs font-medium rounded bg-neutral-100 dark:bg-neutral-900 text-neutral-700 dark:text-neutral-300 border border-neutral-200/40 dark:border-neutral-800/40">
+                                                        {item}
+                                                    </span>
+                                                ))}
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <h4 className="text-xs font-semibold text-neutral-400 dark:text-neutral-500 uppercase mb-2">Backend</h4>
+                                            <div className="flex flex-wrap gap-1.5">
+                                                {["C# .NET Core", ".NET 8/10", "Node.js", "Express", "Socket.IO", "SignalR"].map((item, idx) => (
+                                                    <span key={idx} className="px-2 py-0.5 text-xs font-medium rounded bg-neutral-100 dark:bg-neutral-900 text-neutral-700 dark:text-neutral-300 border border-neutral-200/40 dark:border-neutral-800/40">
+                                                        {item}
+                                                    </span>
+                                                ))}
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <h4 className="text-xs font-semibold text-neutral-400 dark:text-neutral-500 uppercase mb-2">Databases & Tools</h4>
+                                            <div className="flex flex-wrap gap-1.5">
+                                                {["SQL Server", "Git", "Blender", "Autodesk Fusion", "SketchUp", "Adobe CC"].map((item, idx) => (
+                                                    <span key={idx} className="px-2 py-0.5 text-xs font-medium rounded bg-neutral-100 dark:bg-neutral-900 text-neutral-700 dark:text-neutral-300 border border-neutral-200/40 dark:border-neutral-800/40">
+                                                        {item}
+                                                    </span>
+                                                ))}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </aside>
+
+                        {/* RIGHT COLUMN: Content (Scrollable on desktop) */}
+                        <main className="lg:col-span-8 space-y-12 lg:pl-6">
+
+                            {/* About Me Section */}
+                            <section>
+                                <div className="bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 rounded-2xl p-6 md:p-8 shadow-sm relative overflow-hidden">
+                                    <div className="absolute top-0 left-0 w-1.5 h-full bg-neutral-900 dark:bg-neutral-100"></div>
+                                    <h2 className="text-xs font-bold uppercase tracking-widest text-neutral-500 dark:text-neutral-400 mb-3 ml-2">
+                                        About Me
+                                    </h2>
+                                    <p className="text-neutral-600 dark:text-neutral-300 leading-relaxed m-0 ml-2 text-sm md:text-base">
+                                        Transitioning from a Graphic and 3D Designer to a Software Developer has given me a unique edge: I care deeply about the frontend user experience while managing backend logic. As a self-taught programmer, I actively integrate AI assistants into my daily development process to accelerate my learning curve, debug efficiently, and build reliable company applications.
+                                    </p>
+                                </div>
+                            </section>
+
+                            {/* Professional Experience Section */}
+                            <section>
+                                <h2 className="text-2xl font-bold tracking-tight mb-8 text-neutral-900 dark:text-neutral-50">
+                                    Work Experience
+                                </h2>
+
+                                {/* Overall Role Summary */}
+                                <div className="mb-8 pl-2">
+                                    <div className="flex flex-col sm:flex-row sm:items-baseline justify-between gap-1 mb-2">
+                                        <h3 className="text-lg md:text-xl font-bold text-neutral-900 dark:text-neutral-50">
+                                            Software Developer at <a href="https://www.automotionworks.com/" target="_blank" rel="noreferrer" className="text-accent-600 dark:text-accent-500 hover:underline">Auto Motion Works</a>
+                                        </h3>
+                                        <span className="text-xs font-semibold uppercase tracking-wide text-neutral-500 dark:text-neutral-400 shrink-0">
+                                            Feb 2023 - Present
+                                        </span>
+                                    </div>
+                                    <p className="text-neutral-600 dark:text-neutral-300 leading-relaxed text-sm md:text-base">
+                                        Delivered full-stack lifecycle ownership from database design to production deployment, maintaining multiple company web applications for over 3 years alongside dedicated cross-platform mobile development.
+                                    </p>
+                                </div>
+
+                                <div className="ml-2 mt-4 space-y-1">
+                                    <ExperienceAccordion
+                                        title="AMW Service Mobile Application"
+                                        date="May 2023 - May 2024"
+                                        tags={["Flutter (BLoC)", "Dio", "SignalR Chat", "Background Service", "Local Notifications", "GDPR Compliance"]}
+                                        bullets={[
+                                            "<strong>Architected and developed a cross-platform mobile application</strong> using Flutter (BLoC, Dio) featuring adaptive UI layouts, custom typography, secure JWT keychain storage, and Google Play Store compliant publishing workflows.",
+                                            "<strong>Integrated a real-time collaborative chat module</strong> by wrapping <code>signalr_core</code> inside a robust WebSocket connection manager, allowing onsite service engineers to upload files and receive instant repair hubs events.",
+                                            "<strong>Engineered local reminders and notifications</strong> utilizing <code>flutter_background_service</code> and <code>flutter_local_notifications</code> integrated with native deep linking to route engineers directly to relevant service ticket states.",
+                                            "<strong>Developed a GDPR-compliant account deletion workflow</strong> featuring a 14-day secure cancellation period powered by a custom BLoC state machine syncing with the C# backend API."
+                                        ]}
+                                    />
+
+                                    <ExperienceAccordion
+                                        title="AMW Shuttle Car"
+                                        date="Nov 2023 - Oct 2024"
+                                        tags={["SketchUp", "Fusion 360", "FreeCAD", "Blender", "3D Animation"]}
+                                        bullets={[
+                                            "<strong>Designed industrial assets and 3D visual models</strong> for automated storage and retrieval systems (ASRS) using SketchUp, Autodesk Fusion, and FreeCAD to create accurate physical designs and structural frame prototypes.",
+                                            "<strong>Produced high-fidelity 3D performance showcase videos</strong> using Blender, Premiere, and After Effects to visualize motion dynamics, technical specs, and robotic operations for client demonstrations."
+                                        ]}
+                                    />
+
+                                    <ExperienceAccordion
+                                        title="AMW Service Web Application"
+                                        date="Aug 2024 - Jan 2026"
+                                        tags={["React", "Redux-Saga", "ASP.NET Core", "Quartz.NET", "PWA Offline Geofence", "Dynamic RBAC"]}
+                                        bullets={[
+                                            "<strong>Developed a secure backend account deletion scheduler</strong> using ASP.NET Core and Quartz.NET, running daily automated database cleanup routines via Dapper stored procedures.",
+                                            "<strong>Built a high-performance Progressive Web App (PWA)</strong> utilizing <code>webpack-pwa-manifest</code> and custom User-Agent parsers to orchestrate seamless, platform-specific standalone installations.",
+                                            "<strong>Engineered an offline-first geofenced tracking engine</strong> utilizing the HTML5 Geolocation API, Haversine formula, and PWA Background Sync API inside a custom service worker.",
+                                            "<strong>Designed an interactive KPI analytics dashboard</strong> using React, Redux-Saga, Chart.js, and ApexCharts.",
+                                            "<strong>Re-engineered system access controls</strong> from hardcoded menus to a fully dynamic claims-based Role-Based Access Control (RBAC) admin management module.",
+                                            "<strong>Architected a comprehensive Preventive Maintenance (PM) contract planner</strong> dividing onsite and online workflows."
+                                        ]}
+                                    />
+
+                                    <ExperienceAccordion
+                                        title="Internal Delegate System"
+                                        date="Mar 2025"
+                                        tags={["Node.js", "Express", "Socket.IO", "@mentions Router", "Web Push Notifications"]}
+                                        bullets={[
+                                            "<strong>Upgraded real-time web-socket infrastructure</strong> using Node.js, Express, and Socket.IO to support collaborative workspace invitations and multi-threaded discussion room scopes (<code>joinProject</code> / <code>joinDiscussion</code>).",
+                                            "<strong>Engineered an interactive <code>@mentions</code> notification router</strong> featuring lexical regex-to-ID parsing and a hybrid delivery system that pushes real-time WebSocket events or falls back to VAPID Web Push for offline users."
+                                        ]}
+                                    />
+
+                                    <ExperienceAccordion
+                                        title="Internal Data Management System"
+                                        date="Apr 2025 - Mar 2026"
+                                        tags={["ASP.NET Core", "React", "Material-UI", "SheetJS", "Fuzzy-String Engine", "T-SQL OPENJSON"]}
+                                        bullets={[
+                                            "<strong>Designed a high-throughput spreadsheet parser</strong> using SheetJS, offloading Excel-to-JSON validation to the client and processing imports via set-based database transactions.",
+                                            "<strong>Developed a C# fuzzy-string match engine</strong> leveraging the Levenshtein Distance algorithm to automatically resolve and align misspelled department names.",
+                                            "<strong>Architected a centralized company calendar</strong> using Material-UI and custom React hooks, injecting dynamic CSS gradients.",
+                                            "<strong>Built a consolidated taskboard dashboard aggregator</strong> running parallel asynchronous queries (<code>Promise.all</code>) across three distinct services.",
+                                            "<strong>Engineered a hierarchical access-filtered manager dashboard</strong> comparing actual employee hours to calendar schedules.",
+                                            "<strong>Implemented a highly performant employee evaluation pipeline</strong> using bulk JSON processing (<code>OPENJSON</code>) on MS SQL Server."
+                                        ]}
+                                    />
+                                </div>
+                            </section>
+
+                            {/* Section 3: Personal Projects */}
+                            <section>
+                                <h2 className="text-2xl font-bold tracking-tight mb-8 text-neutral-900 dark:text-neutral-50">
+                                    Personal Projects
+                                </h2>
+
+                                <div className="bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-all duration-200">
+                                    <div className="p-6 md:p-8">
+                                        <div className="flex flex-col xl:flex-row xl:items-start justify-between gap-6 mb-6">
+                                            <div>
+                                                <h3 className="text-xl font-bold text-neutral-900 dark:text-neutral-100 mb-1">InvestPlanner</h3>
+                                                <p className="text-sm font-medium text-neutral-500 dark:text-neutral-400">Value Investing & Portfolio PWA</p>
+                                            </div>
+                                            <div className="flex flex-col sm:flex-row gap-2.5 w-full sm:w-auto">
+                                                <a
+                                                    href="https://investplanner.vercel.app/"
+                                                    target="_blank"
+                                                    rel="noreferrer"
+                                                    className="w-full sm:w-auto inline-flex items-center justify-center gap-1.5 px-4 py-2 bg-neutral-900 dark:bg-neutral-100 text-white dark:text-neutral-900 text-sm font-semibold rounded-lg hover:bg-neutral-800 dark:hover:bg-neutral-200 transition-colors shadow-sm text-center"
+                                                >
+                                                    Live App <ExternalLinkIcon />
+                                                </a>
+                                                <div className="flex gap-2.5 w-full sm:w-auto">
+                                                    <a
+                                                        href="https://github.com/treetasetp42/planningPort-FrontEnd"
+                                                        target="_blank"
+                                                        rel="noreferrer"
+                                                        className="w-1/2 sm:w-auto inline-flex items-center justify-center gap-1.5 px-4 py-2 bg-white dark:bg-neutral-900 text-neutral-700 dark:text-neutral-300 text-sm font-medium rounded-lg border border-neutral-200 dark:border-neutral-700 hover:bg-neutral-50 dark:hover:bg-neutral-800 transition-colors text-center"
+                                                    >
+                                                        Frontend Repo <ExternalLinkIcon />
+                                                    </a>
+                                                    <a
+                                                        href="https://github.com/treetasetp42/3TaC8-PlanningPort"
+                                                        target="_blank"
+                                                        rel="noreferrer"
+                                                        className="w-1/2 sm:w-auto inline-flex items-center justify-center gap-1.5 px-4 py-2 bg-white dark:bg-neutral-900 text-neutral-700 dark:text-neutral-300 text-sm font-medium rounded-lg border border-neutral-200 dark:border-neutral-700 hover:bg-neutral-50 dark:hover:bg-neutral-800 transition-colors text-center"
+                                                    >
+                                                        Backend Repo <ExternalLinkIcon />
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <p className="text-neutral-600 dark:text-neutral-300 mb-8 leading-relaxed text-sm md:text-base">
+                                            A full-stack progressive web application designed to help users efficiently manage their value investing portfolios. Equipped with an integrated context-aware AI assistant and intelligent offline-first interaction modules, all backed by a scalable role-based ASP.NET Core service.
+                                        </p>
+
+                                        {/* Changelog Toggle */}
+                                        <div className="border border-neutral-200 dark:border-neutral-800 rounded-xl overflow-hidden bg-neutral-50 dark:bg-neutral-950/30">
+                                            <button
+                                                onClick={() => setChangelogOpen(!changelogOpen)}
+                                                className="w-full flex items-center justify-between p-4 bg-neutral-100/50 dark:bg-neutral-900/30 hover:bg-neutral-100 dark:hover:bg-neutral-800 transition-colors focus:outline-none text-sm font-semibold text-neutral-800 dark:text-neutral-200"
+                                                aria-expanded={changelogOpen}
+                                            >
+                                                <span className="flex items-center gap-2">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-neutral-400"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" x2="8" y1="13" y2="13"></line><line x1="16" x2="8" y1="17" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
+                                                    Recent Updates (Changelog)
+                                                </span>
+                                                <ChevronDownIcon className={`transition-transform duration-200 ${changelogOpen ? 'rotate-180' : ''}`} />
+                                            </button>
+
+                                            <div className={`grid transition-all duration-300 ease-in-out ${changelogOpen ? 'grid-rows-[1fr] opacity-100' : 'grid-rows-[0fr] opacity-0'}`}>
+                                                <div className="overflow-hidden">
+                                                    <div className="p-5 md:p-6 max-h-[28rem] overflow-y-auto custom-scrollbar bg-white dark:bg-neutral-900 border-t border-neutral-200 dark:border-neutral-800 prose prose-sm prose-neutral dark:prose-invert max-w-none">
+
+                                                        {/* Real Changelog v1.1.0 */}
+                                                        <h3 className="mt-0 text-base font-bold text-neutral-900 dark:text-neutral-100">v1.1.0 - AI Assistant Integration</h3>
+                                                        <p className="text-xs text-neutral-500 dark:text-neutral-400 italic mb-3">Released on May 21, 2026</p>
+
+                                                        <div className="mb-4">
+                                                            <h4 className="text-xs font-semibold text-accent-600 dark:text-accent-500 uppercase tracking-wider mb-1">Frontend Updates</h4>
+                                                            <ul className="list-disc pl-5 space-y-1 text-sm text-neutral-600 dark:text-neutral-300">
+                                                                <li><strong>AI Chatbot Assistant:</strong> Implemented an interactive floating chat window powered by Google Gemini 2.5 Flash.</li>
+                                                                <li><strong>Context-Aware Assistance:</strong> Configured frontend to send active page route paths (<code>window.location.pathname</code>) to the backend dynamically, enabling hyper-focused local assistance based on where the user is (settings, watchlist, portfolio).</li>
+                                                                <li><strong>Smart FAQ Chips:</strong> Added a set of 5 offline FAQs (Guest Mode, cash operations, trade simulations, Google OAuth link, and Watchlists) that instantly answer questions locally.</li>
+                                                                <li><strong>Smart Chip Filtering:</strong> The FAQ choices are persistently shown at the bottom of the chat list after bot responses. Once a chip is clicked, it dynamically filters out from the suggestions, keeping the remaining options visible.</li>
+                                                                <li><strong>Thai Polite Persona Suffix:</strong> Enforced beautiful polite female Thai suffixes across prompt responses.</li>
+                                                                <li><strong>Markdown Text Formatter:</strong> Formatted raw <code>**bold**</code> text and <code>\n</code> linebreaks into actual HTML elements dynamically in React, eliminating messy double-asterisk tags.</li>
+                                                                <li><strong>Production-Ready Safe Error Interceptor:</strong> Modified catch blocks to suppress raw technical error messages on production. Displays a friendly Thai fallback message instead: "ขออภัยค่ะ ขณะนี้ระบบ AI มีผู้ใช้งานเป็นจำนวนมากหรือเกิดข้อขัดข้องชั่วคราว..." while logging detailed parameters to developer console.</li>
+                                                            </ul>
+                                                        </div>
+
+                                                        <div className="mb-6">
+                                                            <h4 className="text-xs font-semibold text-accent-600 dark:text-accent-500 uppercase tracking-wider mb-1">Backend Updates</h4>
+                                                            <ul className="list-disc pl-5 space-y-1 text-sm text-neutral-600 dark:text-neutral-300">
+                                                                <li><strong>Gemini 2.5 Flash API Endpoint:</strong> Constructed a RESTful backend chatbot endpoint on ASP.NET Core that processes custom system instructions, consuming active page paths to customize AI responses.</li>
+                                                                <li><strong>Polite Suffix Guardrail:</strong> Implemented strict backend system instructions enforcing a polite, female Thai persona, completely forbidding male or mixed-gender suffix styles.</li>
+                                                                <li><strong>Resilient Config Loader:</strong> Designed a resilient API key loader supporting fallback environment variables and returning dynamic masked keys on failure to facilitate seamless Azure diagnostics.</li>
+                                                            </ul>
+                                                        </div>
+
+                                                        <hr className="border-neutral-200 dark:border-neutral-800 my-4" />
+
+                                                        {/* Real Changelog v1.0.2 */}
+                                                        <h3 className="text-base font-bold text-neutral-900 dark:text-neutral-100">v1.0.2 - Offline Guest Mode & Sync Pipeline</h3>
+                                                        <p className="text-xs text-neutral-500 dark:text-neutral-400 italic mb-3">Released on May 17, 2026</p>
+
+                                                        <div className="mb-4">
+                                                            <h4 className="text-xs font-semibold text-accent-600 dark:text-accent-500 uppercase tracking-wider mb-1">Frontend Updates</h4>
+                                                            <ul className="list-disc pl-5 space-y-1 text-sm text-neutral-600 dark:text-neutral-300">
+                                                                <li><strong>Offline Guest Mode (ผู้เยี่ยมชม):</strong> Introduced a zero-setup local guest mode allowing immediate access to portfolios, cash flows, and stock trade simulation entirely offline with robust persistent browser storage.</li>
+                                                                <li><strong>Mandatory Email Enforcement:</strong> Upgraded registration tabs and Guest Sync modals to make Email a strict required field, complete with bilingual validation alerts ("Please enter your email address" / "กรุณากรอกที่อยู่อีเมลของคุณ").</li>
+                                                                <li><strong>TOS & Privacy Dialog:</strong> Refined and optimized legal consent screens and privacy dialog layouts.</li>
+                                                            </ul>
+                                                        </div>
+
+                                                        <div>
+                                                            <h4 className="text-xs font-semibold text-accent-600 dark:text-accent-500 uppercase tracking-wider mb-1">Backend Updates</h4>
+                                                            <ul className="list-disc pl-5 space-y-1 text-sm text-neutral-600 dark:text-neutral-300">
+                                                                <li><strong>Unified Cloud Sync/Migration Pipeline:</strong> Designed a mathematically reconciled migration engine that sequence-reconstructs guest trades, deposits cash flows, and transitions all data seamlessly to the database upon registration or Google Link.</li>
+                                                                <li><strong>Security & Database Seeding:</strong> Integrated robust BCrypt password hashing, SMTP-based password recovery, JWT token generation, and automatic data seeding for administrator credentials on database updates.</li>
+                                                            </ul>
+                                                        </div>
+
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </section>
+
+                            <footer className="pt-8 border-t border-neutral-200 dark:border-neutral-800 text-center text-sm font-medium text-neutral-500 dark:text-neutral-400">
+                                &copy; {new Date().getFullYear()} Treetaset Prasatbundith. All rights reserved.
+                            </footer>
+                        </main>
+
+                    </div>
+
+                    {/* Floating Theme Switcher FAB */}
+                    <button
+                        onClick={toggleDarkMode}
+                        className="fixed bottom-6 right-6 z-50 p-3.5 rounded-full bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 text-neutral-600 dark:text-neutral-300 hover:bg-neutral-50 dark:hover:bg-neutral-800 hover:-translate-y-0.5 active:translate-y-0 transition-all duration-200 shadow-lg hover:shadow-xl focus:outline-none focus:ring-2 focus:ring-accent-500 flex items-center justify-center shrink-0"
+                        aria-label="Toggle dark mode"
+                    >
+                        {darkMode ? <SunIcon className="w-5 h-5 text-amber-500" /> : <MoonIcon className="w-5 h-5 text-neutral-500 dark:text-neutral-400" />}
+                    </button>
+                </div>
+            );
+        };
+
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<App />);
+    </script>
+</body>
+
+</html>
