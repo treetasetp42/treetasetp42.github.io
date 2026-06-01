@@ -425,7 +425,7 @@
                                         </div>
 
                                         <p className="text-neutral-600 dark:text-neutral-300 mb-8 leading-relaxed text-sm md:text-base">
-                                            A full-stack progressive web application designed to help users efficiently manage their value investing portfolios. Equipped with an integrated context-aware AI assistant and intelligent offline-first interaction modules, all backed by a scalable role-based ASP.NET Core service.
+                                            A full-stack progressive web application designed to help users efficiently manage their value investing portfolios. Equipped with an integrated context-aware AI assistant and intelligent offline-first interaction modules, all backed by a scalable role-based ASP.NET Core service. Deployed API and database on a Linux VPS using Docker Compose, configured NGINX as a reverse proxy, and secured the connection with Let's Encrypt SSL.
                                         </p>
 
                                         {/* Changelog Toggle */}
@@ -446,8 +446,35 @@
                                                 <div className="overflow-hidden">
                                                     <div className="p-5 md:p-6 max-h-[28rem] overflow-y-auto custom-scrollbar bg-white dark:bg-neutral-900 border-t border-neutral-200 dark:border-neutral-800 prose prose-sm prose-neutral dark:prose-invert max-w-none">
 
+                                                        {/* Real Changelog v1.2.0 */}
+                                                        <h3 className="mt-0 text-base font-bold text-neutral-900 dark:text-neutral-100">v1.2.0 - Portfolio Charts & Theme Customization</h3>
+                                                        <p className="text-xs text-neutral-500 dark:text-neutral-400 italic mb-3">Released on June 1, 2026</p>
+
+                                                        <div className="mb-6">
+                                                            <h4 className="text-xs font-semibold text-accent-600 dark:text-accent-500 uppercase tracking-wider mb-1">Frontend Updates</h4>
+                                                            <ul className="list-disc pl-5 space-y-1 text-sm text-neutral-600 dark:text-neutral-300">
+                                                                <li><strong>Dynamic Portfolio Performance Chart:</strong> Overhauled the SVG Performance Chart in <code>Dashboard.jsx</code> to dynamically calculate cumulative portfolio net worth over <code>YTD</code>, <code>1W</code>, and <code>1D</code> timelines using real user Transaction History (<code>UrlPP.Transaction.History</code>). Large deposits now trigger "skyhigh" visual spikes on their exact date.</li>
+                                                                <li><strong>Dynamic Allocation Legend:</strong> Hovering over the custom interactive SVG Allocation Donut Chart highlights the ticker, absolute value, and exact percentage weight directly in the center of the ring.</li>
+                                                                <li><strong>Multi-Theme Styling Mode:</strong> Rebuilt the theme generator to support on-the-fly toggling between elegant standard <code>'modern'</code> layouts and stark retro-minimalist <code>'brutalist'</code> layouts with sharp solid borders and offset shadow controls.</li>
+                                                                <li><strong>Creator Badge & Versioning:</strong> Added dynamic version flags importing version straight from <code>package.json</code> along with creator links displaying creator badges linking to personal portfolios.</li>
+                                                                <li><strong>Dialog Button Standardization:</strong> Re-aligned all positive confirm actions to the <strong>left side</strong> and negative cancel/dismiss choices to the <strong>right side</strong> of modals and dialogs globally.</li>
+                                                                <li><strong>Layout Constraints & Padding:</strong> Refactored the dashboard and page scaffolding to use standard flexboxes and full screen <code>100%</code> boxes instead of fixed maximum bounds, expanding all financial cards and tables to perfectly cover modern wide screens.</li>
+                                                                <li><strong>Centered Loaders:</strong> Standardized the centered positioning of page and table spinners to avoid jarring layout shifts.</li>
+                                                                <li><strong>Insufficiency State Safeguard:</strong> Configured the buying power cash module to present a clear loading status instead of launching incorrect "insufficient funds" warning sheets when first opening portfolios.</li>
+                                                            </ul>
+                                                        </div>
+
+                                                        <div className="mb-6">
+                                                            <h4 className="text-xs font-semibold text-accent-600 dark:text-accent-500 uppercase tracking-wider mb-1">Backend & Infrastructure Updates</h4>
+                                                            <ul className="list-disc pl-5 space-y-1 text-sm text-neutral-600 dark:text-neutral-300">
+                                                                <li><strong>Cloud Deployment & Reverse Proxy:</strong> Deployed API and database on a Linux VPS using Docker Compose, configured NGINX as a reverse proxy, and secured the connection with Let's Encrypt SSL.</li>
+                                                            </ul>
+                                                        </div>
+
+                                                        <hr className="border-neutral-200 dark:border-neutral-800 my-4" />
+
                                                         {/* Real Changelog v1.1.0 */}
-                                                        <h3 className="mt-0 text-base font-bold text-neutral-900 dark:text-neutral-100">v1.1.0 - AI Assistant Integration</h3>
+                                                        <h3 className="text-base font-bold text-neutral-900 dark:text-neutral-100">v1.1.0 - AI Assistant Integration</h3>
                                                         <p className="text-xs text-neutral-500 dark:text-neutral-400 italic mb-3">Released on May 21, 2026</p>
 
                                                         <div className="mb-4">
