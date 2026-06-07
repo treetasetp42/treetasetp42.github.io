@@ -446,8 +446,34 @@
                                                 <div className="overflow-hidden">
                                                     <div className="p-5 md:p-6 max-h-[28rem] overflow-y-auto custom-scrollbar bg-white dark:bg-neutral-900 border-t border-neutral-200 dark:border-neutral-800 prose prose-sm prose-neutral dark:prose-invert max-w-none">
 
+                                                        {/* Real Changelog v1.2.1 */}
+                                                        <h3 className="mt-0 text-base font-bold text-neutral-900 dark:text-neutral-100">v1.2.1 - Responsive Layout & Lighthouse Optimization</h3>
+                                                        <p className="text-xs text-neutral-500 dark:text-neutral-400 italic mb-3">Released on June 7, 2026</p>
+
+                                                        <div className="mb-6">
+                                                            <h4 className="text-xs font-semibold text-accent-600 dark:text-accent-500 uppercase tracking-wider mb-1">Frontend Updates</h4>
+                                                            <ul className="list-disc pl-5 space-y-1 text-sm text-neutral-600 dark:text-neutral-300">
+                                                                <li><strong>1M Timeline Option:</strong> Introduced the <code>1M</code> (1 Month) timeline to the portfolio Performance chart, complete with custom mock values and dynamic calculation logic.</li>
+                                                                <li><strong>Responsive Summary Cards:</strong> Overhauled the metrics cards styling with dynamic padding, responsive title/value font sizes, and stacked layout structures to prevent truncation near the <code>md</code> breakpoint.</li>
+                                                                <li><strong>Responsive Performance Header:</strong> The timeframe buttons on the Performance card now wrap cleanly to a second line at narrow screen widths (<code>xs</code> and <code>md</code>).</li>
+                                                                <li><strong>Relocated Version Info:</strong> Moved the application version and creator links on the Login page into the scrollable form box under the Terms of Service.</li>
+                                                                <li><strong>Lighthouse Performance Optimizations:</strong> Preloaded Google Fonts and deferred stylesheet loading to improve initial load speed and Lighthouse score.</li>
+                                                                <li><strong>Allocation Donut Slice Rendering:</strong> Fixed the SVG <code>strokeDasharray</code> gap size formula and starting offset direction to ensure secondary slices (such as AMZN) display correctly.</li>
+                                                            </ul>
+                                                        </div>
+
+                                                        <div className="mb-6">
+                                                            <h4 className="text-xs font-semibold text-accent-600 dark:text-accent-500 uppercase tracking-wider mb-1">SEO & Infrastructure Updates</h4>
+                                                            <ul className="list-disc pl-5 space-y-1 text-sm text-neutral-600 dark:text-neutral-300">
+                                                                <li><strong>Robots.txt Configuration:</strong> Added a valid <code>robots.txt</code> file to allow crawler indexing and resolve Lighthouse crawling errors.</li>
+                                                                <li><strong>SEO Metadata:</strong> Configured proper page title and meta description tag in <code>index.html</code> for better search visibility.</li>
+                                                            </ul>
+                                                        </div>
+
+                                                        <hr className="border-neutral-200 dark:border-neutral-800 my-4" />
+
                                                         {/* Real Changelog v1.2.0 */}
-                                                        <h3 className="mt-0 text-base font-bold text-neutral-900 dark:text-neutral-100">v1.2.0 - Portfolio Charts & Theme Customization</h3>
+                                                        <h3 className="text-base font-bold text-neutral-900 dark:text-neutral-100">v1.2.0 - Portfolio Charts & Theme Customization</h3>
                                                         <p className="text-xs text-neutral-500 dark:text-neutral-400 italic mb-3">Released on June 1, 2026</p>
 
                                                         <div className="mb-6">
