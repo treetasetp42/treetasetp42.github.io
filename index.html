@@ -425,7 +425,7 @@
                                         </div>
 
                                         <p className="text-neutral-600 dark:text-neutral-300 mb-8 leading-relaxed text-sm md:text-base">
-                                            A full-stack progressive web application designed to help users efficiently manage their value investing portfolios. Equipped with an integrated context-aware AI assistant and intelligent offline-first interaction modules, all backed by a scalable role-based ASP.NET Core service. Deployed API and database on a Linux VPS using Docker Compose, configured NGINX as a reverse proxy, and secured the connection with Let's Encrypt SSL.
+                                            A full-stack progressive web application designed to help users efficiently manage their value investing portfolios. Equipped with an integrated context-aware AI assistant and intelligent offline-first interaction modules, all backed by a scalable, security-hardened ASP.NET Core service with strict resource ownership, layered rate limiting, and secure session handling. Deployed API and database on a Linux VPS using Docker Compose, configured NGINX as a reverse proxy, and secured the connection with Let's Encrypt SSL.
                                         </p>
 
                                         {/* Changelog Toggle */}
@@ -445,6 +445,34 @@
                                             <div className={`grid transition-all duration-300 ease-in-out ${changelogOpen ? 'grid-rows-[1fr] opacity-100' : 'grid-rows-[0fr] opacity-0'}`}>
                                                 <div className="overflow-hidden">
                                                     <div className="p-5 md:p-6 max-h-[28rem] overflow-y-auto custom-scrollbar bg-white dark:bg-neutral-900 border-t border-neutral-200 dark:border-neutral-800 prose prose-sm prose-neutral dark:prose-invert max-w-none">
+
+                                                        {/* Real Changelog: Frontend v1.2.2 / Backend v1.2.0 */}
+                                                        <h3 className="mt-0 text-base font-bold text-neutral-900 dark:text-neutral-100">September 2026 - Authentication Reliability & API Security</h3>
+                                                        <p className="text-xs text-neutral-500 dark:text-neutral-400 italic mb-3">Frontend v1.2.2 / Backend v1.2.0 · Released on September 12, 2026</p>
+
+                                                        <div className="mb-6">
+                                                            <h4 className="text-xs font-semibold text-accent-600 dark:text-accent-500 uppercase tracking-wider mb-1">Frontend Updates</h4>
+                                                            <ul className="list-disc pl-5 space-y-1 text-sm text-neutral-600 dark:text-neutral-300">
+                                                                <li><strong>Professional Login Feedback:</strong> Replaced raw authentication responses with localized inline alerts and clear invalid-credential, connection, registration, Google login, and account-linking messages.</li>
+                                                                <li><strong>Safer Authentication Flow:</strong> Public authentication failures no longer enter the protected-route token refresh flow or incorrectly redirect users to a session-expired state.</li>
+                                                                <li><strong>Duplicate-Request Protection:</strong> Added an in-flight submission guard to prevent rapid repeated login requests and stacked notifications.</li>
+                                                                <li><strong>Transaction History UX:</strong> Removed the double scrollbar by keeping dialog titles and actions fixed while scrolling only the transaction table.</li>
+                                                            </ul>
+                                                        </div>
+
+                                                        <div className="mb-6">
+                                                            <h4 className="text-xs font-semibold text-accent-600 dark:text-accent-500 uppercase tracking-wider mb-1">Backend & Security Updates</h4>
+                                                            <ul className="list-disc pl-5 space-y-1 text-sm text-neutral-600 dark:text-neutral-300">
+                                                                <li><strong>Layered API Protection:</strong> Added global and endpoint-specific rate limits, request-size constraints, timeouts, connection limits, and input validation.</li>
+                                                                <li><strong>Resource Ownership Enforcement:</strong> Portfolio, cash, transaction, and watchlist operations now verify the authenticated owner to prevent cross-account access.</li>
+                                                                <li><strong>Secure Sessions & JWT Validation:</strong> Hardened production JWT checks, hashed refresh and password-reset tokens, rotated refresh tokens, bounded active sessions, and revoked sessions after password changes.</li>
+                                                                <li><strong>Safer Accounts & Administration:</strong> New users default to the Member role, admin operations require explicit permissions, and password-recovery responses no longer reveal whether an account exists.</li>
+                                                                <li><strong>Production Hardening:</strong> Restricted CORS, added security response headers, sanitized internal and external-provider errors, and secured avatar uploads.</li>
+                                                                <li><strong>Resilient Market Data:</strong> Added short-lived stock quote caching with safe stale-data fallback to reduce repeated Finnhub requests.</li>
+                                                            </ul>
+                                                        </div>
+
+                                                        <hr className="border-neutral-200 dark:border-neutral-800 my-4" />
 
                                                         {/* Real Changelog v1.2.1 */}
                                                         <h3 className="mt-0 text-base font-bold text-neutral-900 dark:text-neutral-100">v1.2.1 - Responsive Layout & Lighthouse Optimization</h3>
